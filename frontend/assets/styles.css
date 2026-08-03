@@ -56,14 +56,12 @@ header[data-testid="stHeader"] {
 
 /* ─── Sidebar Collapse Icon ──────────────────────────────────────── */
 /* UI CHANGE: Minimalist navigation toggle symbol */
-[data-testid="stSidebarCollapseButton"] button *,
-[data-testid="stHeader"] button[kind="header"] * {
+[data-testid="stSidebarCollapseButton"] button * {
     font-size: 0 !important;
     color: transparent !important;
     display: none !important;
 }
-[data-testid="stSidebarCollapseButton"] button::after,
-[data-testid="stHeader"] button[kind="header"]::after {
+[data-testid="stSidebarCollapseButton"] button::after {
     content: "»" !important;
     font-size: 18px !important;
     color: var(--text-primary) !important;

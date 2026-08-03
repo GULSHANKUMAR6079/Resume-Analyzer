@@ -20,24 +20,32 @@ except ImportError:
 # ---------------------------------------------------------------------------
 
 def _secret(key: str) -> str:
-    """Read from environment first, then fall back to st.secrets (flat)."""
+    """Read from environment first, then fall back to st.secrets (flat or nested)."""
     val = os.getenv(key, '')
     if val:
         return val
     try:
-        return st.secrets[key]
-    except (KeyError, FileNotFoundError, AttributeError):
-        return ''
+        # Check flat key in st.secrets
+        if key in st.secrets:
+            return str(st.secrets[key])
+        # Check inside nested [supabase] section if present
+        if "supabase" in st.secrets and key in st.secrets["supabase"]:
+            return str(st.secrets["supabase"][key])
+    except Exception:
+        pass
+    return ''
 
 
-SUPABASE_URL     = _secret('SUPABASE_URL')
+SUPABASE_URL = _secret('SUPABASE_URL')
 SUPABASE_ANON_KEY = _secret('SUPABASE_ANON_KEY') or _secret('SUPABASE_KEY')
 
-OAUTH_REDIRECT_URL = (
-    os.getenv('AUTH_REDIRECT_URL')
-    or _secret('AUTH_REDIRECT_URL')
-    or 'http://localhost:8501'
-)
+# Auto-detect Streamlit Cloud production URL or use configured redirect URL
+_configured_redirect = os.getenv('AUTH_REDIRECT_URL') or _secret('AUTH_REDIRECT_URL')
+if _configured_redirect:
+    OAUTH_REDIRECT_URL = _configured_redirect
+else:
+    # Fallback to local default
+    OAUTH_REDIRECT_URL = 'http://localhost:8501'
 
 
 def _missing_config() -> str | None:
