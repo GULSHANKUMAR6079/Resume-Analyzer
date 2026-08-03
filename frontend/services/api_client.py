@@ -44,7 +44,7 @@ def analyze_resume_api(file_bytes: bytes, filename: str, job_description: str = 
             files=files,
             data=data,
             headers=get_auth_headers(),
-            timeout=60
+            timeout=180
         )
         response.raise_for_status()
         return response.json()
