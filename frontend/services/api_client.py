@@ -4,21 +4,21 @@ from typing import Dict, Optional
 
 import os
 
-# Dynamic BACKEND_URL with environment variable and Streamlit secrets fallback
-BACKEND_URL = os.getenv("BACKEND_URL")
-if not BACKEND_URL:
-    try:
-        BACKEND_URL = st.secrets.get("BACKEND_URL")
-    except Exception:
-        BACKEND_URL = None
-
-if not BACKEND_URL:
-    BACKEND_URL = "http://localhost:8000/api/v1"
-
-# Ensure BACKEND_URL ends with /api/v1 and has no trailing slash
-BACKEND_URL = BACKEND_URL.rstrip('/')
-if not BACKEND_URL.endswith('/api/v1'):
-    BACKEND_URL = f"{BACKEND_URL}/api/v1"
+def get_backend_url() -> str:
+    """Retrieve backend URL dynamically from env or st.secrets."""
+    url = os.getenv("BACKEND_URL", "")
+    if not url:
+        try:
+            url = str(st.secrets.get("BACKEND_URL", ""))
+        except Exception:
+            url = ""
+    if not url:
+        url = "http://localhost:8000/api/v1"
+    
+    url = url.rstrip('/')
+    if not url.endswith('/api/v1'):
+        url = f"{url}/api/v1"
+    return url
 
 def get_auth_headers() -> Dict[str, str]:
     headers = {}
@@ -28,7 +28,8 @@ def get_auth_headers() -> Dict[str, str]:
     return headers
 
 def analyze_resume_api(file_bytes: bytes, filename: str, job_description: str = "") -> Dict:
-    url = f"{BACKEND_URL}/analyze-resume"
+    backend_base = get_backend_url()
+    url = f"{backend_base}/analyze-resume"
     files = {
         'resume': (filename, file_bytes, 'application/octet-stream')
     }
@@ -36,6 +37,7 @@ def analyze_resume_api(file_bytes: bytes, filename: str, job_description: str = 
         'job_description': job_description
     }
 
+    response = None
     try:
         response = requests.post(
             url,
@@ -48,11 +50,15 @@ def analyze_resume_api(file_bytes: bytes, filename: str, job_description: str = 
         return response.json()
     except requests.exceptions.RequestException as exc:
         if response is not None and response.status_code == 422:
-            raise ValueError(f"Document parsing error: {response.json().get('detail')}")
-        raise RuntimeError(f"Backend API error: {exc}")
+            try:
+                detail = response.json().get('detail', 'Validation error')
+            except Exception:
+                detail = response.text
+            raise ValueError(f"Document parsing error: {detail}")
+        raise RuntimeError(f"Backend connection error to '{url}': {exc}")
 
 def download_pdf_report_api(analysis_data: Dict) -> Optional[bytes]:
-    url = f"{BACKEND_URL}/generate-pdf"
+    url = f"{get_backend_url()}/generate-pdf"
     try:
         response = requests.post(
             url,
@@ -66,7 +72,7 @@ def download_pdf_report_api(analysis_data: Dict) -> Optional[bytes]:
         return None
 
 def fetch_history_api() -> list:
-    url = f"{BACKEND_URL}/history"
+    url = f"{get_backend_url()}/history"
     try:
         response = requests.get(url, headers=get_auth_headers(), timeout=15)
         response.raise_for_status()
@@ -75,7 +81,7 @@ def fetch_history_api() -> list:
         return []
 
 def delete_history_api(analysis_id: str) -> bool:
-    url = f"{BACKEND_URL}/history/{analysis_id}"
+    url = f"{get_backend_url()}/history/{analysis_id}"
     try:
         response = requests.delete(url, headers=get_auth_headers(), timeout=15)
         return response.status_code == 200
