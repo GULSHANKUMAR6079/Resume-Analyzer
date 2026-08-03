@@ -2,7 +2,23 @@ import requests
 import streamlit as st
 from typing import Dict, Optional
 
-BACKEND_URL = "http://localhost:8000/api/v1"
+import os
+
+# Dynamic BACKEND_URL with environment variable and Streamlit secrets fallback
+BACKEND_URL = os.getenv("BACKEND_URL")
+if not BACKEND_URL:
+    try:
+        BACKEND_URL = st.secrets.get("BACKEND_URL")
+    except Exception:
+        BACKEND_URL = None
+
+if not BACKEND_URL:
+    BACKEND_URL = "http://localhost:8000/api/v1"
+
+# Ensure BACKEND_URL ends with /api/v1 and has no trailing slash
+BACKEND_URL = BACKEND_URL.rstrip('/')
+if not BACKEND_URL.endswith('/api/v1'):
+    BACKEND_URL = f"{BACKEND_URL}/api/v1"
 
 def get_auth_headers() -> Dict[str, str]:
     headers = {}

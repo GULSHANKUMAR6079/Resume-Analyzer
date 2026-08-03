@@ -14,10 +14,24 @@ APP_TITLE = 'ATS RESUME ANALYZER API'
 APP_VERSION = '2.1.0'
 APP_DESCRIPTION = 'Ultra-fast enterprise-grade ATS resume analysis engine using NLP + ML'
 
-# Allowed CORS Origins
-ALLOWED_ORIGINS = [
-    'https://resume-analyzer-tkgdbzt2ympsbvk6gdp7ed.streamlit.app/',
-]
+# Allowed CORS Origins (handles env variable or defaults)
+_raw_origins = os.getenv("ALLOWED_ORIGINS", "")
+if _raw_origins:
+    import json
+    try:
+        ALLOWED_ORIGINS = json.loads(_raw_origins)
+    except Exception:
+        ALLOWED_ORIGINS = [o.strip() for o in _raw_origins.split(",") if o.strip()]
+else:
+    ALLOWED_ORIGINS = [
+        "http://localhost:8501",
+        "http://127.0.0.1:8501",
+        "https://resume-analyzer-tkgdbzt2ympsbvk6gdp7ed.streamlit.app",
+        "*"
+    ]
+
+# Sanitize origins: remove trailing slashes which break CORS origin matching
+ALLOWED_ORIGINS = [origin.rstrip('/') for origin in ALLOWED_ORIGINS if origin]
 
 # File Size & Extension Constraints
 MAX_FILE_SIZE_MB = 5
