@@ -71,10 +71,10 @@ def validate_skills_with_projects(
     skills: List[str],
     projects: List[Dict],
     experience_entries: List[Dict],
-    embedder: SentenceTransformer,
+    embedder: Optional[SentenceTransformer] = None,
     threshold: float = 0.6,
 ) -> Dict:
-    """Ultra-fast vectorized NumPy matrix embedding similarity for skill validation."""
+    """Ultra-fast skill validation using SentenceTransformers or rapidfuzz fallback."""
     if not skills:
         return {
             'validated_skills': [],
@@ -113,47 +113,58 @@ def validate_skills_with_projects(
             'validation_score': 0.0,
         }
 
-    # 1. Batch matrix encode all skills and section texts
-    skill_vecs = embedder.encode(skills, convert_to_tensor=False, show_progress_bar=False)
-    text_vecs = embedder.encode(texts, convert_to_tensor=False, show_progress_bar=False)
-
-    # Convert to 2D numpy arrays
-    skill_vecs = np.atleast_2d(skill_vecs)
-    text_vecs = np.atleast_2d(text_vecs)
-
-    # 2. Compute vector norms
-    skill_norms = np.linalg.norm(skill_vecs, axis=1, keepdims=True) + 1e-9
-    text_norms = np.linalg.norm(text_vecs, axis=1, keepdims=True) + 1e-9
-
-    # 3. Vectorized matrix dot product cosine similarity (Shape: [len(skills), len(texts)])
-    sim_matrix = np.dot(skill_vecs / skill_norms, (text_vecs / text_norms).T)
-    sim_matrix = np.clip(sim_matrix, 0.0, 1.0)
-
     validated_skills = []
     unvalidated_skills = []
     skill_project_mapping = {}
 
+    # 1. If embedder is active, try matrix similarity
+    sim_matrix = None
+    if embedder is not None:
+        try:
+            skill_vecs = embedder.encode(skills, convert_to_tensor=False, show_progress_bar=False)
+            text_vecs = embedder.encode(texts, convert_to_tensor=False, show_progress_bar=False)
+
+            skill_vecs = np.atleast_2d(skill_vecs)
+            text_vecs = np.atleast_2d(text_vecs)
+
+            skill_norms = np.linalg.norm(skill_vecs, axis=1, keepdims=True) + 1e-9
+            text_norms = np.linalg.norm(text_vecs, axis=1, keepdims=True) + 1e-9
+
+            sim_matrix = np.dot(skill_vecs / skill_norms, (text_vecs / text_norms).T)
+            sim_matrix = np.clip(sim_matrix, 0.0, 1.0)
+        except Exception:
+            sim_matrix = None
+
+    # 2. Match skills using vector matrix or RapidFuzz string match
+    from rapidfuzz import fuzz
+
     for idx, skill in enumerate(skills):
         matching_labels = []
         max_sim = 0.0
+        skill_lower = skill.lower()
 
         for text_idx, label in enumerate(text_labels):
-            sim_score = float(sim_matrix[idx, text_idx])
-            # Direct string substring check or semantic similarity threshold
-            if skill.lower() in texts[text_idx].lower():
+            t_lower = texts[text_idx].lower()
+            sim_score = float(sim_matrix[idx, text_idx]) if sim_matrix is not None else 0.0
+
+            if skill_lower in t_lower:
                 matching_labels.append(label)
                 max_sim = 1.0
-            elif sim_score >= threshold:
+            elif sim_matrix is not None and sim_score >= threshold:
                 matching_labels.append(label)
                 max_sim = max(max_sim, sim_score)
+            elif sim_matrix is None and fuzz.partial_ratio(skill_lower, t_lower) >= 75:
+                matching_labels.append(label)
+                max_sim = 0.8
 
         if matching_labels:
+            unique_labels = list(set(matching_labels))
             validated_skills.append({
                 'skill': skill,
-                'projects': matching_labels,
+                'projects': unique_labels,
                 'similarity': max_sim
             })
-            skill_project_mapping[skill] = matching_labels
+            skill_project_mapping[skill] = unique_labels
         else:
             unvalidated_skills.append(skill)
             skill_project_mapping[skill] = []
