@@ -97,11 +97,51 @@ def _clean_json_response(raw_text: str) -> dict | None:
     except json.JSONDecodeError:
         return None
 
+def extract_fallback_resume(raw_text: str) -> Dict:
+    """Fast spaCy & regex fallback resume parser if Groq LLM API is unavailable."""
+    import re
+    email_match = re.search(r'[\w\.-]+@[\w\.-]+\.\w+', raw_text)
+    email = email_match.group(0) if email_match else None
+    
+    phone_match = re.search(r'\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}', raw_text)
+    phone = phone_match.group(0) if phone_match else None
+
+    li = re.search(r'linkedin\.com/in/[\w-]+', raw_text, re.I)
+    gh = re.search(r'github\.com/[\w-]+', raw_text, re.I)
+
+    common_skills = [
+        "python", "java", "javascript", "typescript", "react", "node", "express",
+        "fastapi", "django", "flask", "sql", "postgresql", "mongodb", "aws", "docker",
+        "kubernetes", "git", "html", "css", "c++", "c#", "machine learning", "data science",
+        "pandas", "numpy", "scikit-learn", "tensorflow", "pytorch", "rest api", "graphql"
+    ]
+    t_lower = raw_text.lower()
+    found_skills = [s.title() for s in common_skills if s in t_lower]
+
+    return _validate_resume_result({
+        "name": raw_text.split('\n')[0].strip() if raw_text else "Candidate",
+        "email": email,
+        "phone": phone,
+        "linkedin": f"https://{li.group(0)}" if li else None,
+        "github": f"https://{gh.group(0)}" if gh else None,
+        "professional_summary": raw_text[:400],
+        "skills": found_skills,
+        "experience": [],
+        "projects": [],
+        "action_verbs": ["Developed", "Built", "Designed", "Managed", "Implemented"],
+        "keywords": found_skills,
+    })
+
 async def parse_resume_async(raw_text: str) -> Dict:
-    client = get_async_groq_client()
-    prompt = RESUME_USER_PROMPT.format(raw_text=raw_text[:8000])
+    api_key = os.getenv('GROQ_API_KEY') or GROQ_API_KEY
+    if not api_key or api_key.strip() == "" or "your_groq_api_key" in api_key.lower():
+        logger.warning("GROQ_API_KEY not configured. Using spaCy & Regex fallback parser.")
+        return extract_fallback_resume(raw_text)
 
     try:
+        client = get_async_groq_client()
+        prompt = RESUME_USER_PROMPT.format(raw_text=raw_text[:8000])
+
         response = await client.chat.completions.create(
             model=GROQ_MODEL,
             messages=[
@@ -117,29 +157,40 @@ async def parse_resume_async(raw_text: str) -> Dict:
         if parsed:
             return _validate_resume_result(parsed)
     except Exception as exc:
-        logger.warning(f"Native JSON mode failed: {exc}. Retrying without schema enforcer...")
-
-    # Fallback attempt if response_format fails
-    response = await client.chat.completions.create(
-        model=GROQ_MODEL,
-        messages=[
-            {'role': 'system', 'content': RESUME_SYSTEM_PROMPT},
-            {'role': 'user', 'content': prompt}
-        ],
-        temperature=0.0,
-        max_tokens=4096
-    )
-    parsed = _clean_json_response(response.choices[0].message.content.strip())
-    if parsed:
-        return _validate_resume_result(parsed)
-    
-    raise ValueError("Failed to parse resume JSON response from Groq LLM API.")
-
-async def parse_job_description_async(raw_text: str) -> Dict:
-    client = get_async_groq_client()
-    prompt = JD_USER_PROMPT.format(raw_text=raw_text[:8000])
+        logger.warning(f"Groq LLM parse attempt 1 failed ({exc}). Retrying without response format...")
 
     try:
+        client = get_async_groq_client()
+        prompt = RESUME_USER_PROMPT.format(raw_text=raw_text[:8000])
+        response = await client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=[
+                {'role': 'system', 'content': RESUME_SYSTEM_PROMPT},
+                {'role': 'user', 'content': prompt}
+            ],
+            temperature=0.0,
+            max_tokens=4096
+        )
+        parsed = _clean_json_response(response.choices[0].message.content.strip())
+        if parsed:
+            return _validate_resume_result(parsed)
+    except Exception as exc:
+        logger.warning(f"Groq LLM parse failed completely ({exc}). Using spaCy & Regex fallback parser.")
+    
+    return extract_fallback_resume(raw_text)
+
+async def parse_job_description_async(raw_text: str) -> Dict:
+    api_key = os.getenv('GROQ_API_KEY') or GROQ_API_KEY
+    if not api_key or api_key.strip() == "" or "your_groq_api_key" in api_key.lower():
+        logger.warning("GROQ_API_KEY not set. Falling back to basic JD parser.")
+        return _validate_jd_result({
+            "keywords": [w.strip() for w in raw_text.split() if len(w) > 4][:15]
+        })
+
+    try:
+        client = get_async_groq_client()
+        prompt = JD_USER_PROMPT.format(raw_text=raw_text[:8000])
+
         response = await client.chat.completions.create(
             model=GROQ_MODEL,
             messages=[
@@ -157,18 +208,23 @@ async def parse_job_description_async(raw_text: str) -> Dict:
     except Exception as exc:
         logger.warning(f"Native JSON mode failed for JD: {exc}. Retrying...")
 
-    response = await client.chat.completions.create(
-        model=GROQ_MODEL,
-        messages=[
-            {'role': 'system', 'content': JD_SYSTEM_PROMPT},
-            {'role': 'user', 'content': prompt}
-        ],
-        temperature=0.0,
-        max_tokens=2048
-    )
-    parsed = _clean_json_response(response.choices[0].message.content.strip())
-    if parsed:
-        return _validate_jd_result(parsed)
+    try:
+        client = get_async_groq_client()
+        prompt = JD_USER_PROMPT.format(raw_text=raw_text[:8000])
+        response = await client.chat.completions.create(
+            model=GROQ_MODEL,
+            messages=[
+                {'role': 'system', 'content': JD_SYSTEM_PROMPT},
+                {'role': 'user', 'content': prompt}
+            ],
+            temperature=0.0,
+            max_tokens=2048
+        )
+        parsed = _clean_json_response(response.choices[0].message.content.strip())
+        if parsed:
+            return _validate_jd_result(parsed)
+    except Exception as exc:
+        logger.warning(f"Groq JD parse failed ({exc}).")
 
     return _validate_jd_result({})
 
