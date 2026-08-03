@@ -16,11 +16,7 @@ APP_DESCRIPTION = 'Ultra-fast enterprise-grade ATS resume analysis engine using 
 
 # Allowed CORS Origins
 ALLOWED_ORIGINS = [
-    'https://appapppy-ktwxupi73vqhjzweksze9d.streamlit.app/',
-    'http://localhost:8501',
-    'http://127.0.0.1:8501',
-    'http://localhost:3000',
-    '*',
+    'https://resume-analyzer-tkgdbzt2ympsbvk6gdp7ed.streamlit.app/',
 ]
 
 # File Size & Extension Constraints
