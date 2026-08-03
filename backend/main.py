@@ -43,13 +43,11 @@ async def lifespan(app: FastAPI):
             logger.error("No spaCy model installed. SpaCy NER features will operate in basic mode.")
             app.state.nlp = None
 
-    # 3. Load SentenceTransformer Embedder
-    logger.info(f"Loading SentenceTransformer: {SENTENCE_TRANSFORMER_MODEL}")
-    from sentence_transformers import SentenceTransformer
-    app.state.embedder = SentenceTransformer(SENTENCE_TRANSFORMER_MODEL)
-    logger.info(f"Successfully loaded {SENTENCE_TRANSFORMER_MODEL}")
+    # 3. Embedder placeholder (lazy-loaded on first request to minimize startup RAM spike)
+    app.state.embedder = None
+    logger.info("SentenceTransformer embedder configured for lazy loading.")
 
-    logger.info("All AI models loaded and ready to serve requests.")
+    logger.info("FastAPI backend startup complete & ready to serve requests.")
     yield
 
     logger.info("Shutting down API and closing HTTP connections...")
