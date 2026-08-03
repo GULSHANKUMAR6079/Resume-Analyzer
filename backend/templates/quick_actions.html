@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><style>body { font-family: Arial; padding: 25px; color: #1e293b; }</style></head>
+<body>
+  <h2>Detected Critical Issues & Improvements</h2>
+  {% for fb in all_feedback %}
+    <div style="background:#fff1f2; border-left:4px solid #f43f5e; padding:10px; margin-bottom:12px;">
+      <h3 style="margin:0; color:#9f1239;">{{ fb.issue_title }} ({{ fb.severity_level }})</h3>
+      <p style="margin:5px 0;">{{ fb.explanation }}</p>
+      <small><strong>Fix:</strong> {{ fb.how_to_fix }}</small>
+    </div>
+  {% endfor %}
+</body>
+</html>

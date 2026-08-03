@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; color: #1e293b; padding: 25px; line-height: 1.5; }
+  .header { text-align: center; border-bottom: 2px solid #6366f1; padding-bottom: 15px; }
+  .score-badge { font-size: 42px; font-weight: bold; color: {{ score_color }}; margin: 10px 0; }
+  .section-title { font-size: 18px; color: #4338ca; border-left: 4px solid #6366f1; padding-left: 8px; margin-top: 25px; }
+  .grid { display: flex; justify-content: space-between; margin-top: 15px; }
+  .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 12px; border-radius: 8px; width: 18%; text-align: center; }
+  .card-val { font-size: 18px; font-weight: bold; color: #1e1b4b; }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h1>ATS Resume Analysis Summary Report</h1>
+    <div class="score-badge">{{ overall_score }}/100</div>
+    <p><em>{{ interpretation }}</em></p>
+  </div>
+
+  <div class="section-title">Score Breakdown</div>
+  <div class="grid">
+    <div class="card"><div class="card-val">{{ component_scores.formatting }}/20</div><small>Formatting</small></div>
+    <div class="card"><div class="card-val">{{ component_scores.keywords }}/25</div><small>Keywords</small></div>
+    <div class="card"><div class="card-val">{{ component_scores.content }}/25</div><small>Content</small></div>
+    <div class="card"><div class="card-val">{{ component_scores.skill_validation }}/15</div><small>Validation</small></div>
+    <div class="card"><div class="card-val">{{ component_scores.ats_compatibility }}/15</div><small>ATS Match</small></div>
+  </div>
+
+  <div class="section-title">Key Strengths</div>
+  <ul>
+    {% for strength in strengths %}
+      <li>{{ strength }}</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

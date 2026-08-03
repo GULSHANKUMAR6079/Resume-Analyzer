@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head><style>body { font-family: Arial; padding: 25px; color: #1e293b; }</style></head>
+<body>
+  <h2>Job Description Match & Skill Gap Analysis</h2>
+  {% if jd_analysis %}
+    <p><strong>Match Score:</strong> {{ jd_analysis.match_percentage }}%</p>
+    <p><strong>Matched Keywords:</strong> {{ jd_analysis.matched_keywords|join(', ') }}</p>
+    <p><strong>Missing Keywords:</strong> {{ jd_analysis.missing_keywords|join(', ') }}</p>
+  {% else %}
+    <p>No job description was provided for target matching.</p>
+  {% endif %}
+</body>
+</html>

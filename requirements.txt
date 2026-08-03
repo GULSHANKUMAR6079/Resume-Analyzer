@@ -1,0 +1,33 @@
+# ── Backend: Web Framework ──
+fastapi>=0.110.0
+uvicorn[standard]>=0.27.0
+pydantic>=2.6.0
+python-multipart>=0.0.9
+python-dotenv>=1.0.0
+
+# ── Backend: NLP, Vector Embeddings & Matching ──
+spacy>=3.7.0,<4.0.0
+sentence-transformers>=2.5.0
+numpy>=1.26.0
+rapidfuzz>=3.6.0
+
+# ── Backend: Document Parsing ──
+pdfplumber>=0.11.0
+PyPDF2>=3.0.0
+python-docx>=1.1.0
+python-magic>=0.4.27; sys_platform != 'win32'
+python-magic-bin>=0.4.14; sys_platform == 'win32'
+
+# ── Backend: PDF & HTML Report Generation ──
+jinja2>=3.1.0
+weasyprint>=60.0
+
+# ── Backend: Cloud Services & Security ──
+httpx>=0.27.0
+groq>=0.13.0
+PyJWT[crypto]>=2.8.0
+
+# ── Frontend ──
+streamlit>=1.32.0
+requests>=2.31.0
+supabase>=2.4.0

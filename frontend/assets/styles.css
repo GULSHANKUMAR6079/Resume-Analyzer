@@ -1,0 +1,602 @@
+/* ==========================================================================
+   ATS Resume Analyzer — Enterprise Design System (Stripe / Linear / GitHub)
+   Clean, minimalist, modern light theme built for enterprise usability.
+   Palette: Primary #2563EB, Success #16A34A, Warning #D97706, Error #DC2626,
+   Background #FFFFFF, Secondary BG #F8FAFC, Borders #E5E7EB, Text #111827.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* UI CHANGE: Standardized enterprise color palette and design tokens */
+:root {
+    --bg:            #FFFFFF;
+    --bg-subtle:     #F8FAFC;
+    --bg-sidebar:    #F8FAFC;
+    --border:        #E5E7EB;
+    --border-strong: #D1D5DB;
+    --text-primary:  #111827;
+    --text-secondary:#6B7280;
+    --text-muted:    #9CA3AF;
+    --accent:        #2563EB;
+    --accent-hover:  #1D4ED8;
+    --accent-soft:   #EFF6FF;
+    --success:       #16A34A;
+    --success-soft:  #F0FDF4;
+    --danger:        #DC2626;
+    --danger-soft:   #FEF2F2;
+    --warning:       #D97706;
+    --warning-soft:  #FFFBEB;
+    --radius:        8px;
+    --radius-sm:     6px;
+    --shadow-card:   0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* ─── Global App Layout ──────────────────────────────────────────── */
+/* UI CHANGE: Set high-contrast typography, clean background, and responsive container constraints */
+.stApp {
+    background-color: var(--bg) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+header[data-testid="stHeader"] {
+    background-color: var(--bg) !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+
+#MainMenu, footer { 
+    visibility: hidden !important; 
+    display: none !important; 
+}
+
+.main .block-container {
+    padding: 2.25rem 3rem 4rem 3rem !important;
+    max-width: 1080px !important;
+}
+
+/* ─── Sidebar Collapse Icon ──────────────────────────────────────── */
+/* UI CHANGE: Minimalist navigation toggle symbol */
+[data-testid="stSidebarCollapseButton"] button *,
+[data-testid="stHeader"] button[kind="header"] * {
+    font-size: 0 !important;
+    color: transparent !important;
+    display: none !important;
+}
+[data-testid="stSidebarCollapseButton"] button::after,
+[data-testid="stHeader"] button[kind="header"]::after {
+    content: "»" !important;
+    font-size: 18px !important;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    display: inline-block !important;
+    visibility: visible !important;
+    line-height: 1 !important;
+}
+
+/* ─── Form Inputs & Text Areas ──────────────────────────────────── */
+/* UI CHANGE: Clean, modern input fields with subtle focus rings and high readability */
+[data-testid="stTextInputRootElement"],
+div[data-baseweb="input"],
+div[data-baseweb="base-input"],
+div.stTextInput > div {
+    background-color: var(--bg) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: var(--radius-sm) !important;
+    box-shadow: none !important;
+}
+[data-testid="stTextInputRootElement"] input,
+div[data-baseweb="input"] input,
+input[type="text"], input[type="password"], textarea {
+    background-color: var(--bg) !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    box-shadow: none !important;
+    font-size: 13.5px !important;
+    padding: 9px 12px !important;
+}
+[data-testid="stInputIconButton"], [data-testid="stInputIconButton"] button,
+div[data-baseweb="input"] button, div[data-baseweb="input"] div {
+    background-color: var(--bg) !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+[data-testid="stTextInputRootElement"] button *, [data-testid="stInputIconButton"] *,
+div[data-baseweb="input"] button * {
+    font-size: 0 !important;
+    color: transparent !important;
+    display: none !important;
+}
+/* Password visibility toggle — monochrome SVG eye icon */
+[data-testid="stInputIconButton"] button::after, div[data-baseweb="input"] button::after {
+    content: "" !important;
+    display: inline-block !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E") !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    visibility: visible !important;
+}
+input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+}
+[data-testid="stTextArea"] textarea {
+    border: 1px solid var(--border-strong) !important;
+    border-radius: var(--radius-sm) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* ─── Sidebar Styling ───────────────────────────────────────────── */
+/* UI CHANGE: Minimalist enterprise sidebar with subtle borders and structured headings */
+[data-testid="stSidebar"] {
+    background-color: var(--bg-sidebar) !important;
+    border-right: 1px solid var(--border) !important;
+}
+[data-testid="stSidebar"] > div:first-child { padding-top: 1.25rem !important; }
+
+[data-testid="stSidebar"] h1, [data-testid="stSidebar"] h2, [data-testid="stSidebar"] h3,
+[data-testid="stSidebar"] p, [data-testid="stSidebar"] label,
+[data-testid="stSidebar"] span, [data-testid="stSidebar"] div {
+    color: var(--text-primary) !important;
+    font-family: 'Inter', sans-serif;
+}
+
+/* UI CHANGE: Solid enterprise brand mark (no gradients) */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 2px 4px 16px 4px;
+}
+.sidebar-brand-mark {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    background-color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    letter-spacing: -0.02em;
+}
+.sidebar-brand-text {
+    font-size: 15px;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+}
+.sidebar-brand-sub {
+    font-size: 10.5px !important;
+    font-weight: 500 !important;
+    color: var(--text-muted) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* Sidebar section labels (NAVIGATION / ACCOUNT) */
+.sidebar-heading {
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    color: var(--text-muted) !important;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 4px 0 8px 4px !important;
+    display: block;
+}
+
+/* UI CHANGE: Sidebar radio transformed into clean list item pills */
+[data-testid="stSidebar"] .stRadio > label { display: none !important; }
+[data-testid="stSidebar"] .stRadio > div { gap: 2px !important; }
+[data-testid="stSidebar"] .stRadio label {
+    padding: 8px 12px !important;
+    border-radius: var(--radius-sm) !important;
+    transition: background-color 0.15s ease, color 0.15s ease !important;
+    cursor: pointer !important;
+    color: #374151 !important;
+    font-weight: 500 !important;
+    font-size: 13.5px !important;
+    width: 100%;
+}
+[data-testid="stSidebar"] .stRadio label:hover {
+    background-color: #F1F5F9 !important;
+    color: var(--text-primary) !important;
+}
+[data-testid="stSidebar"] .stRadio label:has(input:checked) {
+    background-color: var(--accent-soft) !important;
+    color: var(--accent) !important;
+    font-weight: 600 !important;
+}
+[data-testid="stSidebar"] .stRadio label:has(input:checked) p {
+    color: var(--accent) !important;
+    font-weight: 600 !important;
+}
+[data-testid="stSidebar"] .stRadio input[type="radio"] {
+    accent-color: var(--accent) !important;
+}
+
+/* Sidebar auth tabs (Sign in / Sign up) */
+[data-testid="stSidebar"] [data-baseweb="tab-list"] {
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--border) !important;
+    gap: 4px !important;
+}
+[data-testid="stSidebar"] [data-baseweb="tab"] {
+    color: var(--text-secondary) !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+}
+[data-testid="stSidebar"] [aria-selected="true"] {
+    color: var(--accent) !important;
+    border-bottom-color: var(--accent) !important;
+}
+
+/* Sidebar account card wrapper */
+.sidebar-account-card {
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-top: 4px;
+}
+
+/* ─── Typography ──────────────────────────────────────────────────── */
+/* UI CHANGE: Enterprise typography hierarchy with consistent letter-spacing */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif !important;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    margin-top: 0;
+}
+p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
+
+/* ─── Top Page Header ────────────────────────────────────────────── */
+/* UI CHANGE: Clean, subtle page header divider and structured eyebrow title */
+.page-header {
+    padding-bottom: 18px;
+    margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+}
+.page-eyebrow {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 6px;
+}
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+    letter-spacing: -0.02em;
+}
+.page-subtitle {
+    font-size: 13.5px;
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.5;
+    max-width: 640px;
+}
+
+/* ─── Centered Hero (Home View) ──────────────────────────────────── */
+/* UI CHANGE: Focused, balanced hero layout suitable for software dashboards */
+.hero-container {
+    text-align: center;
+    padding: 36px 16px 20px 16px;
+    margin: 0 auto;
+    max-width: 680px;
+}
+.hero-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+    color: var(--accent);
+    margin-bottom: 12px;
+    display: block;
+}
+.hero-title {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    margin: 0 0 16px 0;
+}
+.hero-sub {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-width: 600px;
+    margin: 0 auto 4px auto;
+}
+
+/* ─── Cards & Containers ─────────────────────────────────────────── */
+/* UI CHANGE: Modern enterprise cards with clean 1px borders and soft background tinting */
+.card, .glass-card {
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    box-shadow: var(--shadow-card);
+}
+.feature-card {
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px 20px;
+    height: 100%;
+}
+.feature-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px 0;
+}
+.feature-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ─── Small Caps Section Label ──────────────────────────────────── */
+.section-label {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--text-muted);
+    margin-bottom: 6px;
+}
+.muted-text { color: var(--text-secondary); font-size: 13px; }
+
+/* ─── Score Gauge ───────────────────────────────────────────────── */
+/* UI CHANGE: Crisp score display indicator */
+.score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 0 auto;
+    background-color: var(--bg-subtle);
+    border: 2.5px solid var(--accent);
+}
+.score-num {
+    font-size: 36px;
+    font-weight: 800;
+    line-height: 1;
+    color: var(--text-primary);
+    letter-spacing: -0.03em;
+}
+.score-label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+/* ─── Stat Pill Metrics ──────────────────────────────────────────── */
+/* UI CHANGE: Enterprise metric pills with subtle borders and clear value presentation */
+.stat-pill {
+    display: inline-block;
+    background-color: var(--bg-subtle);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 20px;
+    text-align: center;
+    min-width: 96px;
+}
+.stat-pill-value { 
+    font-size: 18px; 
+    font-weight: 700; 
+    color: var(--text-primary); 
+    line-height: 1.2; 
+}
+.stat-pill-label {
+    font-size: 10px; 
+    font-weight: 600; 
+    text-transform: uppercase;
+    letter-spacing: 0.08em; 
+    color: var(--text-secondary); 
+    margin-top: 2px;
+}
+
+/* ─── Skill & Keyword Tags ──────────────────────────────────────── */
+/* UI CHANGE: High-contrast skill indicators without decorative unicode symbols */
+.skill-tag {
+    display: inline-block; 
+    background-color: #F3F4F6; 
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm); 
+    padding: 3px 10px; 
+    font-size: 12px; 
+    font-weight: 500;
+    color: #374151; 
+    margin: 2px;
+}
+.skill-tag-valid, .kw-matched {
+    display: inline-block; 
+    background-color: var(--success-soft); 
+    border: 1px solid #BBF7D0;
+    border-radius: var(--radius-sm); 
+    padding: 3px 10px; 
+    font-size: 12px; 
+    font-weight: 600;
+    color: #15803D; 
+    margin: 2px;
+}
+.skill-tag-invalid, .kw-missing {
+    display: inline-block; 
+    background-color: var(--danger-soft); 
+    border: 1px solid #FECACA;
+    border-radius: var(--radius-sm); 
+    padding: 3px 10px; 
+    font-size: 12px; 
+    font-weight: 600;
+    color: #B91C1C; 
+    margin: 2px;
+}
+
+/* ─── Score Breakdown Progress Bars ──────────────────────────────── */
+/* UI CHANGE: Modern progress indicators */
+.score-bar-wrap { margin-bottom: 16px; }
+.score-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.score-bar-title { font-size: 13px; font-weight: 500; color: #374151; }
+.score-bar-value { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
+.score-bar-track { height: 6px; background-color: #F1F5F9; border-radius: 4px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 4px; background-color: var(--accent); transition: width 0.4s ease-out; }
+
+/* ─── Issue Cards & Feedback ─────────────────────────────────────── */
+/* UI CHANGE: Enterprise issue notification panels with crisp severity indicator borders */
+.issue-card {
+    background-color: var(--bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--danger);
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-bottom: 12px;
+}
+.issue-card.moderate { border-left-color: var(--warning); }
+.issue-card.low { border-left-color: var(--accent); }
+.issue-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin: 0 0 4px 0; }
+.issue-body { font-size: 13px; color: var(--text-secondary); margin: 0 0 8px 0; line-height: 1.55; }
+.issue-fix { font-size: 13px; color: var(--accent); margin: 0; font-weight: 500; }
+.code-block {
+    background-color: var(--bg-subtle); 
+    border: 1px solid var(--border); 
+    border-radius: var(--radius-sm);
+    padding: 10px 14px; 
+    font-family: 'SFMono-Regular', Consolas, Monaco, monospace; 
+    font-size: 12px;
+    color: var(--text-primary); 
+    margin-top: 8px; 
+    white-space: pre-wrap;
+}
+
+/* ─── Severity Badges ────────────────────────────────────────────── */
+.badge-critical { background-color: var(--danger-soft); color: #B91C1C; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.badge-high     { background-color: var(--warning-soft); color: #B45309; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.badge-medium   { background-color: var(--accent-soft); color: #1D4ED8; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+
+/* ─── Divider Lines ──────────────────────────────────────────────── */
+.divider { height: 1px; background-color: var(--border); margin: 24px 0; }
+
+/* ─── Buttons ────────────────────────────────────────────────────── */
+/* UI CHANGE: Uniform, professional button styling matching Stripe/GitHub primary actions */
+.stButton > button, .stFormSubmitButton > button,
+[data-testid="stBaseButton-secondaryFormSubmit"], [data-testid="stBaseButton-primaryFormSubmit"],
+[data-testid="stBaseButton-primary"], button[kind="secondaryFormSubmit"] {
+    background-color: var(--accent) !important;
+    color: #FFFFFF !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    border-radius: var(--radius-sm) !important;
+    border: none !important;
+    padding: 8px 18px !important;
+    width: 100% !important;
+    transition: background-color 0.15s ease !important;
+}
+.stButton > button p, .stButton > button span,
+.stFormSubmitButton > button p, .stFormSubmitButton > button span,
+[data-testid="stBaseButton-secondaryFormSubmit"] p, [data-testid="stBaseButton-secondaryFormSubmit"] span {
+    color: #FFFFFF !important; 
+    font-weight: 600 !important;
+}
+.stButton > button:hover, .stFormSubmitButton > button:hover,
+[data-testid="stBaseButton-secondaryFormSubmit"]:hover {
+    background-color: var(--accent-hover) !important; 
+    color: #FFFFFF !important;
+}
+
+/* Sidebar buttons (Sign out) render as outline style */
+[data-testid="stSidebar"] .stButton > button {
+    background-color: var(--bg) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-strong) !important;
+}
+[data-testid="stSidebar"] .stButton > button p { color: var(--text-primary) !important; }
+[data-testid="stSidebar"] .stButton > button:hover { background-color: var(--bg-subtle) !important; }
+
+/* ─── Google OAuth Link Button ───────────────────────────────────── */
+/* UI CHANGE: Scoped Google OAuth link button styling with clean vector branding */
+.stLinkButton > a {
+    background-color: var(--bg) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-strong) !important;
+    border-radius: var(--radius-sm) !important;
+    font-weight: 600 !important;
+    font-size: 13px !important;
+    padding: 8px 18px !important;
+    text-align: center !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    transition: background-color 0.15s ease, border-color 0.15s ease !important;
+}
+.stLinkButton > a::before {
+    content: "" !important;
+    display: inline-block !important;
+    width: 18px !important;
+    height: 18px !important;
+    margin-right: 8px !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath fill='%23EA4335' d='M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z'/%3E%3Cpath fill='%234285F4' d='M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z'/%3E%3Cpath fill='%23FBBC05' d='M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.28-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24s.92 7.54 2.56 10.78l7.97-6.19z'/%3E%3Cpath fill='%2334A853' d='M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z'/%3E%3C/svg%3E") !important;
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+}
+.stLinkButton > a p, .stLinkButton > a span {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+}
+.stLinkButton > a:hover {
+    background-color: var(--bg-subtle) !important;
+    border-color: #9CA3AF !important;
+}
+
+/* ─── File Uploader Component ───────────────────────────────────── */
+/* UI CHANGE: Clean drag-and-drop container styling */
+[data-testid="stFileUploader"] {
+    background-color: var(--bg-subtle) !important;
+    border: 1px dashed #CBD5E1 !important;
+    border-radius: var(--radius) !important;
+    padding: 12px !important;
+}
+
+/* ─── Tab Navigation Bar ────────────────────────────────────────── */
+/* UI CHANGE: High contrast tabs matching Linear and GitHub tab navigation */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 4px !important;
+    border-bottom: 1px solid var(--border) !important;
+}
+.stTabs [data-baseweb="tab"] {
+    color: var(--text-secondary) !important;
+    font-weight: 600 !important;
+    font-size: 13.5px !important;
+    padding: 8px 4px !important;
+}
+.stTabs [aria-selected="true"] {
+    color: var(--accent) !important;
+    border-bottom-color: var(--accent) !important;
+}
+
+/* ─── Text Utilities ────────────────────────────────────────────── */
+.text-strong { color: var(--text-primary) !important; font-weight: 700; }
+.text-accent { color: var(--accent) !important; font-weight: 700; }
+

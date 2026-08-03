@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head><style>body { font-family: Arial; padding: 25px; color: #1e293b; }</style></head>
+<body>
+  <h2>Skill Validation & Detailed Action Items</h2>
+  <p><strong>Validated Skills:</strong> {{ validated_skills|length }} verified with proof</p>
+  <ul>
+    {% for v in validated_skills %}
+      <li><strong>{{ v.skill }}</strong> — demonstrated in: {{ v.projects|join(', ') }}</li>
+    {% endfor %}
+  </ul>
+  <h3>Unvalidated Skills</h3>
+  <ul>
+    {% for u in unvalidated_skills %}
+      <li>{{ u }} — add project or role bullet points showcasing this skill.</li>
+    {% endfor %}
+  </ul>
+</body>
+</html>
