@@ -1,5 +1,5 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
-
+torch
 # ── Backend: Web Framework ──
 fastapi>=0.110.0
 uvicorn[standard]>=0.27.0
