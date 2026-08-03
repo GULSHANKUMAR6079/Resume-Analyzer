@@ -17,17 +17,7 @@ async def analyze_resume(
     user_id: str = Depends(get_current_user),
 ):
     nlp = request.app.state.nlp
-    embedder = getattr(request.app.state, 'embedder', None)
-    if embedder is None:
-        try:
-            logger.info("Initializing SentenceTransformer embedder on demand...")
-            from sentence_transformers import SentenceTransformer
-            from backend.core.config import SENTENCE_TRANSFORMER_MODEL
-            embedder = SentenceTransformer(SENTENCE_TRANSFORMER_MODEL)
-            request.app.state.embedder = embedder
-        except Exception as exc:
-            logger.warning(f"Could not load SentenceTransformer ({exc}) — falling back to RapidFuzz fuzzy matching.")
-            embedder = None
+    embedder = None  # Memory-safe mode: RapidFuzz fuzzy engine handles skill validation in < 80MB RAM
 
     # 1. Read and parse document text
     try:

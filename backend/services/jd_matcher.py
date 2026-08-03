@@ -30,17 +30,22 @@ def fuzzy_match_keywords(resume_terms: List[str], jd_terms: List[str], threshold
     return {'matched': matched, 'missing': missing}
 
 def calculate_semantic_similarity(
-    resume_text: str, jd_text: str, embedder: SentenceTransformer
+    resume_text: str, jd_text: str, embedder: Optional[SentenceTransformer] = None
 ) -> float:
     if not resume_text or not jd_text:
         return 0.0
-    try:
-        resume_emb = embedder.encode(resume_text[:5000], convert_to_tensor=False)
-        jd_emb = embedder.encode(jd_text[:5000], convert_to_tensor=False)
-        sim = np.dot(resume_emb, jd_emb) / (np.linalg.norm(resume_emb) * np.linalg.norm(jd_emb))
-        return float(np.clip(sim, 0.0, 1.0))
-    except Exception:
-        return 0.0
+    if embedder is not None:
+        try:
+            resume_emb = embedder.encode(resume_text[:5000], convert_to_tensor=False)
+            jd_emb = embedder.encode(jd_text[:5000], convert_to_tensor=False)
+            sim = np.dot(resume_emb, jd_emb) / (np.linalg.norm(resume_emb) * np.linalg.norm(jd_emb))
+            return float(np.clip(sim, 0.0, 1.0))
+        except Exception:
+            pass
+    # Fast lightweight RapidFuzz fallback (0 MB RAM overhead)
+    from rapidfuzz import fuzz
+    ratio = fuzz.token_set_ratio(resume_text[:3000].lower(), jd_text[:3000].lower())
+    return float(np.clip(ratio / 100.0, 0.0, 1.0))
 
 def analyze_skills_gap(
     resume_skills: List[str], jd_text: str, nlp: spacy.Language
@@ -77,8 +82,8 @@ def compare_resume_with_jd(
     resume_skills: List[str],
     jd_text: str,
     jd_keywords: List[str],
-    embedder: SentenceTransformer,
-    nlp: spacy.Language,
+    embedder: Optional[SentenceTransformer] = None,
+    nlp: Optional[spacy.Language] = None,
 ) -> Dict:
     semantic_sim = calculate_semantic_similarity(resume_text, jd_text, embedder)
     fuzzy_res = fuzzy_match_keywords(resume_keywords + resume_skills, jd_keywords)
