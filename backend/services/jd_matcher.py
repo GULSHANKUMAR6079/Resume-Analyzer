@@ -1,7 +1,6 @@
-from typing import List, Dict
+from typing import Any, List, Dict
 import numpy as np
 import spacy
-from sentence_transformers import SentenceTransformer
 from rapidfuzz import fuzz
 
 def normalize_skill(skill: str) -> str:

@@ -1,8 +1,7 @@
 import re
 import spacy
 import numpy as np
-from sentence_transformers import SentenceTransformer
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 ZIP_CODE_PATTERN = r'\b\d{5}(?:-\d{4})?\b'
 STREET_ADDRESS_PATTERN = (

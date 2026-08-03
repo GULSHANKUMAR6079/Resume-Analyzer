@@ -124,13 +124,13 @@ def _extract_pdf_with_pypdf2(file_data: bytes) -> str:
 
 def extract_text_from_pdf(file_data: bytes) -> str:
     try:
-        return _extract_pdf_with_pdfplumber(file_data)
+        return _extract_pdf_with_pypdf2(file_data)
     except Exception as exc:
-        logger.warning(f"pdfplumber failed: {exc}. Trying PyPDF2 fallback...")
+        logger.warning(f"PyPDF2 failed: {exc}. Trying pdfplumber fallback...")
         try:
-            return _extract_pdf_with_pypdf2(file_data)
+            return _extract_pdf_with_pdfplumber(file_data)
         except Exception as exc2:
-            logger.error(f"PyPDF2 fallback also failed: {exc2}")
+            logger.error(f"pdfplumber fallback also failed: {exc2}")
             raise FileParsingError(
                 "Could not extract selectable text from PDF. "
                 "The PDF may be corrupted, password protected, or contain scanned images."
