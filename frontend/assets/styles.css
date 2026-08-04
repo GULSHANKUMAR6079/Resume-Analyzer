@@ -1,42 +1,44 @@
 /* ==========================================================================
    ATS Resume Analyzer — Enterprise Design System (Stripe / Linear / GitHub)
-   Clean, minimalist, modern light theme built for enterprise usability.
-   Palette: Primary #2563EB, Success #16A34A, Warning #D97706, Error #DC2626,
-   Background #FFFFFF, Secondary BG #F8FAFC, Borders #E5E7EB, Text #111827.
+   Enterprise-grade HR Analytics UI/UX. Clean, minimalist, and production-ready.
+   Palette: Background #F8FAFC, Cards #FFFFFF, Primary #1E3A8A, 
+   Text #111827, Secondary Text #6B7280, Borders #E5E7EB.
    ========================================================================== */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* UI CHANGE: Standardized enterprise color palette and design tokens */
 :root {
-    --bg:            #FFFFFF;
-    --bg-subtle:     #F8FAFC;
-    --bg-sidebar:    #F8FAFC;
-    --border:        #E5E7EB;
-    --border-strong: #D1D5DB;
-    --text-primary:  #111827;
-    --text-secondary:#6B7280;
-    --text-muted:    #9CA3AF;
-    --accent:        #2563EB;
-    --accent-hover:  #1D4ED8;
-    --accent-soft:   #EFF6FF;
-    --success:       #16A34A;
-    --success-soft:  #F0FDF4;
-    --danger:        #DC2626;
-    --danger-soft:   #FEF2F2;
-    --warning:       #D97706;
-    --warning-soft:  #FFFBEB;
-    --radius:        8px;
-    --radius-sm:     6px;
-    --shadow-card:   0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+    --bg:              #F8FAFC;
+    --card-bg:         #FFFFFF;
+    --bg-sidebar:      #FFFFFF;
+    --border:          #E5E7EB;
+    --border-strong:   #D1D5DB;
+    --text-primary:    #111827;
+    --text-secondary:  #6B7280;
+    --text-muted:      #9CA3AF;
+    --primary:         #1E3A8A;
+    --primary-hover:   #172554;
+    --primary-light:   #EFF6FF;
+    --success:         #15803D;
+    --success-bg:      #F0FDF4;
+    --success-border:  #BBF7D0;
+    --danger:          #B91C1C;
+    --danger-bg:       #FEF2F2;
+    --danger-border:   #FECACA;
+    --warning:         #B45309;
+    --warning-bg:      #FFFBEB;
+    --warning-border:  #FDE68A;
+    --radius:          14px;
+    --radius-sm:       8px;
+    --shadow-card:     0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+    --shadow-hover:    0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 2px 4px -2px rgba(0, 0, 0, 0.04);
 }
 
 /* ─── Global App Layout ──────────────────────────────────────────── */
-/* UI CHANGE: Set high-contrast typography, clean background, and responsive container constraints */
 .stApp {
     background-color: var(--bg) !important;
     color: var(--text-primary) !important;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
 }
 
 header[data-testid="stHeader"] {
@@ -50,12 +52,11 @@ header[data-testid="stHeader"] {
 }
 
 .main .block-container {
-    padding: 2.25rem 3rem 4rem 3rem !important;
-    max-width: 1080px !important;
+    padding: 2rem 2.5rem 3.5rem 2.5rem !important;
+    max-width: 1140px !important;
 }
 
 /* ─── Sidebar Collapse Icon ──────────────────────────────────────── */
-/* UI CHANGE: Minimalist navigation toggle symbol */
 [data-testid="stSidebarCollapseButton"] button * {
     font-size: 0 !important;
     color: transparent !important;
@@ -71,39 +72,56 @@ header[data-testid="stHeader"] {
     line-height: 1 !important;
 }
 
+/* ─── Typography ──────────────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif !important;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.02em !important;
+    margin-top: 0;
+}
+
+p, label, span { 
+    font-family: 'Inter', sans-serif; 
+}
+
 /* ─── Form Inputs & Text Areas ──────────────────────────────────── */
-/* UI CHANGE: Clean, modern input fields with subtle focus rings and high readability */
 [data-testid="stTextInputRootElement"],
 div[data-baseweb="input"],
 div[data-baseweb="base-input"],
 div.stTextInput > div {
-    background-color: var(--bg) !important;
+    background-color: #FFFFFF !important;
     border: 1px solid var(--border-strong) !important;
     border-radius: var(--radius-sm) !important;
     box-shadow: none !important;
 }
+
 [data-testid="stTextInputRootElement"] input,
 div[data-baseweb="input"] input,
 input[type="text"], input[type="password"], textarea {
-    background-color: var(--bg) !important;
+    background-color: #FFFFFF !important;
     color: var(--text-primary) !important;
     border: none !important;
     box-shadow: none !important;
     font-size: 13.5px !important;
     padding: 9px 12px !important;
+    font-family: 'Inter', sans-serif !important;
 }
+
 [data-testid="stInputIconButton"], [data-testid="stInputIconButton"] button,
 div[data-baseweb="input"] button, div[data-baseweb="input"] div {
-    background-color: var(--bg) !important;
+    background-color: #FFFFFF !important;
     border: none !important;
     box-shadow: none !important;
 }
+
 [data-testid="stTextInputRootElement"] button *, [data-testid="stInputIconButton"] *,
 div[data-baseweb="input"] button * {
     font-size: 0 !important;
     color: transparent !important;
     display: none !important;
 }
+
 /* Password visibility toggle — monochrome SVG eye icon */
 [data-testid="stInputIconButton"] button::after, div[data-baseweb="input"] button::after {
     content: "" !important;
@@ -116,10 +134,12 @@ div[data-baseweb="input"] button * {
     background-position: center !important;
     visibility: visible !important;
 }
+
 input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
-    border-color: var(--accent) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 3px rgba(30, 58, 138, 0.1) !important;
 }
+
 [data-testid="stTextArea"] textarea {
     border: 1px solid var(--border-strong) !important;
     border-radius: var(--radius-sm) !important;
@@ -127,7 +147,6 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
 }
 
 /* ─── Sidebar Styling ───────────────────────────────────────────── */
-/* UI CHANGE: Minimalist enterprise sidebar with subtle borders and structured headings */
 [data-testid="stSidebar"] {
     background-color: var(--bg-sidebar) !important;
     border-right: 1px solid var(--border) !important;
@@ -141,29 +160,29 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
     font-family: 'Inter', sans-serif;
 }
 
-/* UI CHANGE: Solid enterprise brand mark (no gradients) */
+/* Enterprise Brand Header */
 .sidebar-brand {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 2px 4px 16px 4px;
+    padding: 4px 4px 16px 4px;
 }
 .sidebar-brand-mark {
     width: 32px;
     height: 32px;
     border-radius: var(--radius-sm);
-    background-color: var(--accent);
+    background-color: var(--primary);
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
     color: #FFFFFF !important;
-    font-weight: 700 !important;
+    font-weight: 800 !important;
     font-size: 14px !important;
     letter-spacing: -0.02em;
 }
 .sidebar-brand-text {
-    font-size: 15px;
+    font-size: 14.5px;
     font-weight: 700 !important;
     color: var(--text-primary) !important;
     letter-spacing: -0.01em;
@@ -171,13 +190,12 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
 }
 .sidebar-brand-sub {
     font-size: 10.5px !important;
-    font-weight: 500 !important;
+    font-weight: 600 !important;
     color: var(--text-muted) !important;
     text-transform: uppercase;
     letter-spacing: 0.06em;
 }
 
-/* Sidebar section labels (NAVIGATION / ACCOUNT) */
 .sidebar-heading {
     font-size: 10.5px !important;
     font-weight: 700 !important;
@@ -188,7 +206,7 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
     display: block;
 }
 
-/* UI CHANGE: Sidebar radio transformed into clean list item pills */
+/* Sidebar Radio list items */
 [data-testid="stSidebar"] .stRadio > label { display: none !important; }
 [data-testid="stSidebar"] .stRadio > div { gap: 2px !important; }
 [data-testid="stSidebar"] .stRadio label {
@@ -206,19 +224,19 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
     color: var(--text-primary) !important;
 }
 [data-testid="stSidebar"] .stRadio label:has(input:checked) {
-    background-color: var(--accent-soft) !important;
-    color: var(--accent) !important;
+    background-color: var(--primary-light) !important;
+    color: var(--primary) !important;
     font-weight: 600 !important;
 }
 [data-testid="stSidebar"] .stRadio label:has(input:checked) p {
-    color: var(--accent) !important;
+    color: var(--primary) !important;
     font-weight: 600 !important;
 }
 [data-testid="stSidebar"] .stRadio input[type="radio"] {
-    accent-color: var(--accent) !important;
+    accent-color: var(--primary) !important;
 }
 
-/* Sidebar auth tabs (Sign in / Sign up) */
+/* Sidebar Auth Tabs */
 [data-testid="stSidebar"] [data-baseweb="tab-list"] {
     background-color: transparent !important;
     border-bottom: 1px solid var(--border) !important;
@@ -230,35 +248,22 @@ input[type="text"]:focus, input[type="password"]:focus, textarea:focus {
     font-size: 13px !important;
 }
 [data-testid="stSidebar"] [aria-selected="true"] {
-    color: var(--accent) !important;
-    border-bottom-color: var(--accent) !important;
+    color: var(--primary) !important;
+    border-bottom-color: var(--primary) !important;
 }
 
-/* Sidebar account card wrapper */
 .sidebar-account-card {
-    background-color: var(--bg);
+    background-color: #FFFFFF;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 12px 14px;
     margin-top: 4px;
 }
 
-/* ─── Typography ──────────────────────────────────────────────────── */
-/* UI CHANGE: Enterprise typography hierarchy with consistent letter-spacing */
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Inter', sans-serif !important;
-    color: var(--text-primary) !important;
-    font-weight: 700 !important;
-    letter-spacing: -0.02em !important;
-    margin-top: 0;
-}
-p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
-
 /* ─── Top Page Header ────────────────────────────────────────────── */
-/* UI CHANGE: Clean, subtle page header divider and structured eyebrow title */
 .page-header {
-    padding-bottom: 18px;
-    margin-bottom: 24px;
+    padding-bottom: 16px;
+    margin-bottom: 22px;
     border-bottom: 1px solid var(--border);
 }
 .page-eyebrow {
@@ -267,8 +272,8 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    color: var(--accent);
-    margin-bottom: 6px;
+    color: var(--primary);
+    margin-bottom: 4px;
 }
 .page-title {
     font-size: 1.5rem;
@@ -282,65 +287,63 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
     color: var(--text-secondary);
     margin: 0;
     line-height: 1.5;
-    max-width: 640px;
-}
-
-/* ─── Centered Hero (Home View) ──────────────────────────────────── */
-/* UI CHANGE: Focused, balanced hero layout suitable for software dashboards */
-.hero-container {
-    text-align: center;
-    padding: 36px 16px 20px 16px;
-    margin: 0 auto;
     max-width: 680px;
-}
-.hero-eyebrow {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.09em;
-    color: var(--accent);
-    margin-bottom: 12px;
-    display: block;
-}
-.hero-title {
-    font-size: 2.25rem;
-    font-weight: 800;
-    color: var(--text-primary);
-    letter-spacing: -0.03em;
-    line-height: 1.2;
-    margin: 0 0 16px 0;
-}
-.hero-sub {
-    font-size: 1rem;
-    color: var(--text-secondary);
-    line-height: 1.6;
-    max-width: 600px;
-    margin: 0 auto 4px auto;
 }
 
 /* ─── Cards & Containers ─────────────────────────────────────────── */
-/* UI CHANGE: Modern enterprise cards with clean 1px borders and soft background tinting */
-.card, .glass-card {
-    background-color: var(--bg);
+.card {
+    background-color: var(--card-bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: 20px 22px;
     margin-bottom: 16px;
     box-shadow: var(--shadow-card);
 }
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 12px;
+    margin-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+}
+
+.card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.card-subtitle {
+    font-size: 12.5px;
+    color: var(--text-secondary);
+    margin: 2px 0 0 0;
+}
+
 .feature-card {
-    background-color: var(--bg-subtle);
+    background-color: #FFFFFF;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    padding: 20px 20px;
+    padding: 18px 20px;
     height: 100%;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow 0.2s ease, border-color 0.2s ease;
 }
+
+.feature-card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: var(--border-strong);
+}
+
 .feature-title {
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text-primary);
     margin: 0 0 4px 0;
 }
+
 .feature-desc {
     font-size: 13px;
     color: var(--text-secondary);
@@ -348,7 +351,7 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
     margin: 0;
 }
 
-/* ─── Small Caps Section Label ──────────────────────────────────── */
+/* ─── Section Labels ────────────────────────────────────────────── */
 .section-label {
     display: inline-block;
     font-size: 11px;
@@ -360,22 +363,22 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
 }
 .muted-text { color: var(--text-secondary); font-size: 13px; }
 
-/* ─── Score Gauge ───────────────────────────────────────────────── */
-/* UI CHANGE: Crisp score display indicator */
+/* ─── Score Display Gauge ────────────────────────────────────────── */
 .score-circle {
-    width: 120px;
-    height: 120px;
+    width: 124px;
+    height: 124px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     margin: 0 auto;
-    background-color: var(--bg-subtle);
-    border: 2.5px solid var(--accent);
+    background-color: #FFFFFF;
+    border: 3px solid var(--primary);
+    box-shadow: var(--shadow-card);
 }
 .score-num {
-    font-size: 36px;
+    font-size: 38px;
     font-weight: 800;
     line-height: 1;
     color: var(--text-primary);
@@ -383,26 +386,26 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
 }
 .score-label {
     font-size: 10px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     color: var(--text-secondary);
     margin-top: 4px;
 }
 
-/* ─── Stat Pill Metrics ──────────────────────────────────────────── */
-/* UI CHANGE: Enterprise metric pills with subtle borders and clear value presentation */
+/* ─── Metric Badges & Pills ──────────────────────────────────────── */
 .stat-pill {
     display: inline-block;
-    background-color: var(--bg-subtle);
+    background-color: #FFFFFF;
     border: 1px solid var(--border);
     border-radius: var(--radius-sm);
-    padding: 10px 20px;
+    padding: 10px 18px;
     text-align: center;
-    min-width: 96px;
+    min-width: 100px;
+    box-shadow: var(--shadow-card);
 }
 .stat-pill-value { 
-    font-size: 18px; 
+    font-size: 17px; 
     font-weight: 700; 
     color: var(--text-primary); 
     line-height: 1.2; 
@@ -417,67 +420,65 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
 }
 
 /* ─── Skill & Keyword Tags ──────────────────────────────────────── */
-/* UI CHANGE: High-contrast skill indicators without decorative unicode symbols */
 .skill-tag {
     display: inline-block; 
-    background-color: #F3F4F6; 
+    background-color: #F1F5F9; 
     border: 1px solid var(--border);
     border-radius: var(--radius-sm); 
-    padding: 3px 10px; 
+    padding: 4px 10px; 
     font-size: 12px; 
     font-weight: 500;
-    color: #374151; 
-    margin: 2px;
+    color: #334155; 
+    margin: 3px 2px;
 }
 .skill-tag-valid, .kw-matched {
     display: inline-block; 
-    background-color: var(--success-soft); 
-    border: 1px solid #BBF7D0;
+    background-color: var(--success-bg); 
+    border: 1px solid var(--success-border);
     border-radius: var(--radius-sm); 
-    padding: 3px 10px; 
+    padding: 4px 10px; 
     font-size: 12px; 
     font-weight: 600;
-    color: #15803D; 
-    margin: 2px;
+    color: var(--success); 
+    margin: 3px 2px;
 }
 .skill-tag-invalid, .kw-missing {
     display: inline-block; 
-    background-color: var(--danger-soft); 
-    border: 1px solid #FECACA;
+    background-color: var(--danger-bg); 
+    border: 1px solid var(--danger-border);
     border-radius: var(--radius-sm); 
-    padding: 3px 10px; 
+    padding: 4px 10px; 
     font-size: 12px; 
     font-weight: 600;
-    color: #B91C1C; 
-    margin: 2px;
+    color: var(--danger); 
+    margin: 3px 2px;
 }
 
 /* ─── Score Breakdown Progress Bars ──────────────────────────────── */
-/* UI CHANGE: Modern progress indicators */
 .score-bar-wrap { margin-bottom: 16px; }
 .score-bar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.score-bar-title { font-size: 13px; font-weight: 500; color: #374151; }
+.score-bar-title { font-size: 13px; font-weight: 600; color: #334155; }
 .score-bar-value { font-size: 12px; color: var(--text-secondary); font-weight: 600; }
-.score-bar-track { height: 6px; background-color: #F1F5F9; border-radius: 4px; overflow: hidden; }
-.score-bar-fill { height: 100%; border-radius: 4px; background-color: var(--accent); transition: width 0.4s ease-out; }
+.score-bar-track { height: 7px; background-color: #F1F5F9; border-radius: 4px; overflow: hidden; }
+.score-bar-fill { height: 100%; border-radius: 4px; background-color: var(--primary); transition: width 0.4s ease-out; }
 
 /* ─── Issue Cards & Feedback ─────────────────────────────────────── */
-/* UI CHANGE: Enterprise issue notification panels with crisp severity indicator borders */
 .issue-card {
-    background-color: var(--bg);
+    background-color: #FFFFFF;
     border: 1px solid var(--border);
-    border-left: 3px solid var(--danger);
+    border-left: 4px solid var(--danger);
     border-radius: var(--radius-sm);
     padding: 16px 20px;
     margin-bottom: 12px;
+    box-shadow: var(--shadow-card);
 }
 .issue-card.moderate { border-left-color: var(--warning); }
-.issue-card.low { border-left-color: var(--accent); }
+.issue-card.low { border-left-color: var(--primary); }
 .issue-title { font-size: 14px; font-weight: 700; color: var(--text-primary); margin: 0 0 4px 0; }
 .issue-body { font-size: 13px; color: var(--text-secondary); margin: 0 0 8px 0; line-height: 1.55; }
-.issue-fix { font-size: 13px; color: var(--accent); margin: 0; font-weight: 500; }
+.issue-fix { font-size: 13px; color: var(--primary); margin: 0; font-weight: 600; }
 .code-block {
-    background-color: var(--bg-subtle); 
+    background-color: #F8FAFC; 
     border: 1px solid var(--border); 
     border-radius: var(--radius-sm);
     padding: 10px 14px; 
@@ -489,19 +490,18 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
 }
 
 /* ─── Severity Badges ────────────────────────────────────────────── */
-.badge-critical { background-color: var(--danger-soft); color: #B91C1C; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-.badge-high     { background-color: var(--warning-soft); color: #B45309; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
-.badge-medium   { background-color: var(--accent-soft); color: #1D4ED8; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.badge-critical { background-color: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger-border); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.badge-high     { background-color: var(--warning-bg); color: var(--warning); border: 1px solid var(--warning-border); padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+.badge-medium   { background-color: var(--primary-light); color: var(--primary); border: 1px solid #BFDBFE; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
 
 /* ─── Divider Lines ──────────────────────────────────────────────── */
-.divider { height: 1px; background-color: var(--border); margin: 24px 0; }
+.divider { height: 1px; background-color: var(--border); margin: 20px 0; }
 
 /* ─── Buttons ────────────────────────────────────────────────────── */
-/* UI CHANGE: Uniform, professional button styling matching Stripe/GitHub primary actions */
 .stButton > button, .stFormSubmitButton > button,
 [data-testid="stBaseButton-secondaryFormSubmit"], [data-testid="stBaseButton-primaryFormSubmit"],
 [data-testid="stBaseButton-primary"], button[kind="secondaryFormSubmit"] {
-    background-color: var(--accent) !important;
+    background-color: var(--primary) !important;
     color: #FFFFFF !important;
     font-weight: 600 !important;
     font-size: 13.5px !important;
@@ -519,23 +519,22 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
 }
 .stButton > button:hover, .stFormSubmitButton > button:hover,
 [data-testid="stBaseButton-secondaryFormSubmit"]:hover {
-    background-color: var(--accent-hover) !important; 
+    background-color: var(--primary-hover) !important; 
     color: #FFFFFF !important;
 }
 
-/* Sidebar buttons (Sign out) render as outline style */
+/* Sidebar buttons (Sign out) */
 [data-testid="stSidebar"] .stButton > button {
-    background-color: var(--bg) !important;
+    background-color: #FFFFFF !important;
     color: var(--text-primary) !important;
     border: 1px solid var(--border-strong) !important;
 }
 [data-testid="stSidebar"] .stButton > button p { color: var(--text-primary) !important; }
-[data-testid="stSidebar"] .stButton > button:hover { background-color: var(--bg-subtle) !important; }
+[data-testid="stSidebar"] .stSidebar .stButton > button:hover { background-color: #F8FAFC !important; }
 
 /* ─── Google OAuth Link Button ───────────────────────────────────── */
-/* UI CHANGE: Scoped Google OAuth link button styling with clean vector branding */
 .stLinkButton > a {
-    background-color: var(--bg) !important;
+    background-color: #FFFFFF !important;
     color: var(--text-primary) !important;
     border: 1px solid var(--border-strong) !important;
     border-radius: var(--radius-sm) !important;
@@ -564,21 +563,19 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
     font-weight: 600 !important;
 }
 .stLinkButton > a:hover {
-    background-color: var(--bg-subtle) !important;
+    background-color: #F8FAFC !important;
     border-color: #9CA3AF !important;
 }
 
 /* ─── File Uploader Component ───────────────────────────────────── */
-/* UI CHANGE: Clean drag-and-drop container styling */
 [data-testid="stFileUploader"] {
-    background-color: var(--bg-subtle) !important;
+    background-color: #FFFFFF !important;
     border: 1px dashed #CBD5E1 !important;
-    border-radius: var(--radius) !important;
+    border-radius: var(--radius-sm) !important;
     padding: 12px !important;
 }
 
 /* ─── Tab Navigation Bar ────────────────────────────────────────── */
-/* UI CHANGE: High contrast tabs matching Linear and GitHub tab navigation */
 .stTabs [data-baseweb="tab-list"] {
     gap: 4px !important;
     border-bottom: 1px solid var(--border) !important;
@@ -587,14 +584,39 @@ p, label { font-family: 'Inter', sans-serif; color: var(--text-secondary); }
     color: var(--text-secondary) !important;
     font-weight: 600 !important;
     font-size: 13.5px !important;
-    padding: 8px 4px !important;
+    padding: 8px 6px !important;
 }
 .stTabs [aria-selected="true"] {
-    color: var(--accent) !important;
-    border-bottom-color: var(--accent) !important;
+    color: var(--primary) !important;
+    border-bottom-color: var(--primary) !important;
+}
+
+/* ─── Table Styling ──────────────────────────────────────────────── */
+.enterprise-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    color: var(--text-primary);
+}
+.enterprise-table th {
+    background-color: #F8FAFC;
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+.enterprise-table td {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+}
+.enterprise-table tr:hover td {
+    background-color: #F8FAFC;
 }
 
 /* ─── Text Utilities ────────────────────────────────────────────── */
 .text-strong { color: var(--text-primary) !important; font-weight: 700; }
-.text-accent { color: var(--accent) !important; font-weight: 700; }
-
+.text-accent { color: var(--primary) !important; font-weight: 700; }

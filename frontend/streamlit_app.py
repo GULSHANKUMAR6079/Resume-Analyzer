@@ -57,10 +57,10 @@ if not st.session_state.access_token and "code" in st.query_params:
 with st.sidebar:
     st.markdown("""
         <div class="sidebar-brand">
-            <div class="sidebar-brand-mark">A</div>
+            <div class="sidebar-brand-mark">ATS</div>
             <div>
                 <div class="sidebar-brand-text">ATS Analyzer</div>
-                <div class="sidebar-brand-sub">Resume Intelligence</div>
+                <div class="sidebar-brand-sub">Enterprise HR Analytics</div>
             </div>
         </div>
     """, unsafe_allow_html=True)
